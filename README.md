@@ -5,7 +5,7 @@
 
 - El trabajo consiste en implementar una aplicación web usando **[Django](https://docs.djangoproject.com/en/4.2/)** que permita buscar imágenes de **POKéMON**. La información será proporcionada mediante una API y luego renderizada por el *framework* en distintas *cards* que mostrarán -como mínimo- la imagen del Pokémon, los tipos del mismo, altura, peso y el nivel base en el que estos existen.
 
-- Gran parte de la aplicación ya está resuelta: solo falta implementar las funcionalidades más importantes... ¿comenzamos? 😉.
+- Gran parte de la aplicación ya está resuelta: solo falta implementar las funcionalidades más importantes... ¿comenzamos? 😉.teeest
 
 ### 📝 ¿Cómo empiezo?
 
