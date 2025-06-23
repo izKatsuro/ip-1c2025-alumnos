@@ -12,7 +12,9 @@ def index_page(request):
 def home(request):
     #Buscamos las imagenes (cards) en el servicio
     images = services.getAllImages();
-    favourite_list = []
+    favourite_list = services.getAllFavourites(request)
+    #creamos un listado de ids de favoritos para facilitar la comparacion entre cards. 
+    favourite_ids = [fav.id for fav in favourite_list]
 
     return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
 
@@ -22,7 +24,9 @@ def search(request):
 
     # si el usuario ingresó algo en el buscador, se deben filtrar las imágenes por dicho ingreso.
     if (name != ''):
-        images = []
+        #Buscamos las imagenes (cards) en el servicio segun el filtro colocado
+        images = services.filterByCharacter(name)
+
         favourite_list = []
 
         return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
@@ -44,15 +48,29 @@ def filter_by_type(request):
 # Estas funciones se usan cuando el usuario está logueado en la aplicación.
 @login_required
 def getAllFavouritesByUser(request):
-    pass
+    favourites = services.getAllFavourites(request)
+    #print(favourites)
+    return render(request, 'favourites.html', {
+        'favourite_list': favourites
+    })
 
 @login_required
 def saveFavourite(request):
-    pass
+    services.saveFavourite(request)
+    images = services.getAllImages(); 
+    favourite_list = services.getAllFavourites(request)
+    favourite_ids = [fav.id for fav in favourite_list]
+
+    return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list , 'favourite_ids': favourite_ids})
 
 @login_required
 def deleteFavourite(request):
-    pass
+    if request.method == 'POST':
+        services.deleteFavourite(request)
+    favourites = services.getAllFavourites(request)    
+    return render(request, 'favourites.html', {
+        'favourite_list': favourites
+    })
 
 @login_required
 def exit(request):
