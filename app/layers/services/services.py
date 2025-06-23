@@ -43,10 +43,11 @@ def filterByCharacter(name):
 # función que filtra las cards según su tipo.
 def filterByType(type_filter):
     filtered_cards = []
+    type_filter = type_filter.lower()  # normalizamos por si el valor, viene mal formateado
 
     for card in getAllImages():
-        # debe verificar si la casa de la card coincide con la recibida por parámetro. Si es así, se añade al listado de filtered_cards.
-        filtered_cards.append(card)
+        if type_filter in [t.lower() for t in card.typestext]: #comparamos haciendo lower tambien al valor que viene de la api
+            filtered_cards.append(card)
 
     return filtered_cards
 
