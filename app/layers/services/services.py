@@ -22,7 +22,16 @@ def getAllImages():
             if icon_url:
                 icon_img = f'<img src="{icon_url}" alt="{t}" title="{t}" height="24" />'
                 type_icons.append(icon_img)
-    # 2) convertir cada img. en una card.
+        card.types = type_icons
+        first_type = types[0] if types else 'other' 
+        card.border_class = "border-warning"     
+        if first_type == "grass":
+            card.border_class = "border-success"
+        if first_type == "fire":
+            card.border_class = "border-danger"
+        if first_type == "water":
+            card.border_class = "border-primary"   
+        card.typestext = types  
     # 3) añadirlas a un nuevo listado que, finalmente, se retornará con todas las card encontradas.
     images.append(card)
     return images
@@ -53,7 +62,7 @@ def filterByType(type_filter):
 
 # añadir favoritos (usado desde el template 'home.html')
 def saveFavourite(request):
-    fav = '' # transformamos un request en una Card (ver translator.py)
+    fav = translator.fromTemplateIntoCard(request) # transformamos un request en una Card (ver translator.py)
     fav.user = get_user(request) # le asignamos el usuario correspondiente.
 
     return repositories.save_favourite(fav) # lo guardamos en la BD.
@@ -65,11 +74,12 @@ def getAllFavourites(request):
     else:
         user = get_user(request)
 
-        favourite_list = [] # buscamos desde el repositories.py TODOS Los favoritos del usuario (variable 'user').
+        favourite_list = repositories.get_all_favourites(user) # buscamos desde el repositories.py TODOS Los favoritos del usuario (variable 'user').
         mapped_favourites = []
 
         for favourite in favourite_list:
-            card = '' # convertimos cada favorito en una Card, y lo almacenamos en el listado de mapped_favourites que luego se retorna.
+            #print(favourite)
+            card = translator.fromFavouriteIntoCard(favourite) # convertimos cada favorito en una Card, y lo almacenamos en el listado de mapped_favourites que luego se retorna.
             mapped_favourites.append(card)
 
         return mapped_favourites
@@ -83,4 +93,5 @@ def get_type_icon_url_by_name(type_name):
     type_id = config.TYPE_ID_MAP.get(type_name.lower())
     if not type_id:
         return None
+    #print(transport.get_type_icon_url_by_id(type_id))
     return transport.get_type_icon_url_by_id(type_id)
