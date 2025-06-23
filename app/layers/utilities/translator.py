@@ -15,6 +15,18 @@ def fromRequestIntoCard(poke_data):
     )
     return card
 
+# Usado cuando la información viene de la BBDD, para transformarla en una Card.
+def fromFavouriteIntoCard(fav):
+    return Card(
+        id=fav['id'],
+        name=fav['name'],
+        height=fav['height'],
+        weight=fav['weight'],
+        types=eval(fav['types']) if isinstance(fav['types'], str) else fav['types'],
+        base=fav['base_experience'],
+        image=fav['image']
+    )
+
 # recupera los tipos del JSON
 def getTypes(poke_data):
     types = []
