@@ -30,10 +30,11 @@ def getAllImages():
         if first_type == "fire":
             card.border_class = "border-danger"
         if first_type == "water":
-            card.border_class = "border-primary"   
+            card.border_class = "border-primary" 
+        # Guardamos los types como texto para usarlos como filtro mas adelante ya que el existente lo cambiamos  
         card.typestext = types  
-    # 3) añadirlas a un nuevo listado que, finalmente, se retornará con todas las card encontradas.
-    images.append(card)
+        # 3) añadirlas a un nuevo listado que, finalmente, se retornará con todas las card encontradas.
+        images.append(card)
     return images
     #pass
 
