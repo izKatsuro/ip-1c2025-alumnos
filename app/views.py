@@ -40,10 +40,14 @@ def filter_by_type(request):
     type = request.POST.get('type', '')
 
     if type != '':
-        images = [] # debe traer un listado filtrado de imágenes, segun si es o contiene ese tipo.
-        favourite_list = []
-
-        return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
+        #Agregamos el filtro por tipo desde el servicio
+        images = services.filterByType(type) # debe traer un listado filtrado de imágenes, segun si es o contiene ese tipo.
+        #Buscamos los favoritos en el servicio
+        favourite_list = services.getAllFavourites (request)
+        #Creamos un listado de ids de favoritos para que sea mas facil comparar entre cards.
+        favourite_ids = [fav.id for fav in favourite_list]
+        # Agregamos el listado de los id favoritos 
+        return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list, 'favourite_ids': favourite_ids })
     else:
         return redirect('home')
 
