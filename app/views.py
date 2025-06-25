@@ -15,8 +15,8 @@ def home(request):
     favourite_list = services.getAllFavourites(request)
     #creamos un listado de ids de favoritos para facilitar la comparacion entre cards. 
     favourite_ids = [fav.id for fav in favourite_list]
-
-    return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
+    # Agregamos el listado de los id favoritos
+    return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list, 'favourite_ids': favourite_ids })
 
 # función utilizada en el buscador.
 def search(request):
@@ -26,10 +26,12 @@ def search(request):
     if (name != ''):
         #Buscamos las imagenes (cards) en el servicio segun el filtro colocado
         images = services.filterByCharacter(name)
-
-        favourite_list = []
-
-        return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
+        #Buscamos los favoritos en el servicio
+        favourite_list = services.getAllFavourites(request)
+        #Creamos un listado de ids de favoritos para que sea mas facil comparar entre cards.
+        favourite_ids = [fav.id for fav in favourite_list]
+        # Agregamos el listado de los id favoritos
+        return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list, 'favourite_ids': favourite_ids })
     else:
         return redirect('home')
 
